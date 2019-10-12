@@ -1,0 +1,5 @@
+# ignore target directory
+/target/
+
+#ignore generated images
+*.ppm 
