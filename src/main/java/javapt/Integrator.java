@@ -5,33 +5,33 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 final public class Integrator {
-	Integrator(final Camera camera, final Scene scene, final int samples, final ImageBuffer image_buffer) {
+	public Integrator(final Camera camera, final Scene scene, final int samples, final ImageBuffer imageBuffer) {
 		this.camera = camera;
 		this.scene = scene;
 		this.samples = samples;
-		this.image_buffer = image_buffer;		
+		this.imageBuffer = imageBuffer;		
 	}
 	
-	final void render() {
+	final public void render() {
         System.out.printf("spp: %d%n", samples);
 
-    	ExecutorService executor_service = Executors.newFixedThreadPool(4);
+    	final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-    	for(int y = 0; y < camera.y_res; ++y)
-    		executor_service.submit(new RenderTask(camera, scene, samples, image_buffer, y));
+    	for(int y = 0; y < camera.imageHeight; ++y)
+    		executorService.submit(new RenderTask(camera, scene, samples, imageBuffer, y));
     	    	
-    	executor_service.shutdown();
+    	executorService.shutdown();
     	
         try {
-            if (!executor_service.awaitTermination(72, TimeUnit.HOURS))
+            if (!executorService.awaitTermination(72, TimeUnit.HOURS))
                 System.err.println("Threads didn't finish in 72 hours!");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }            
 	}
 
-	Camera camera;
-	Scene scene;
-	int samples;
-	ImageBuffer image_buffer;
+	final private Camera camera;
+	final private Scene scene;
+	final private int samples;
+	final private ImageBuffer imageBuffer;
 }

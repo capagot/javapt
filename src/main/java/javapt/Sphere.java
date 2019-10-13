@@ -1,17 +1,17 @@
 package javapt;
 
-class Sphere {
-    public Sphere(final double radius, final Vec3 position, final Vec3 emission, final Vec3 color, final ReflectionType refl_type) {
+final class Sphere {
+    public Sphere(final double radius, final Vec3 center, final Vec3 emission, final Vec3 color, final ReflectionType reflType) {
         this.radius = radius;
-        this.position = position;
+        this.center = center;
         this.emission = emission;
         this.color = color;
-        this.refl_type = refl_type;
+        this.reflType = reflType;
     }
 
-    public boolean intersect(final Ray ray, IntersectionRecord int_rec) {
+    final public boolean intersect(final Ray ray, IntersectionRecord intRec) {
         double epsilon = 1e-4;
-        Vec3 op = Vec3.sub(position, ray.origin);
+        Vec3 op = Vec3.sub(center, ray.origin);
         double b = Vec3.dot(op, ray.direction);
         double det = (radius * radius) - (Vec3.dot(op, op) - (b * b));
 
@@ -23,21 +23,21 @@ class Sphere {
         double t2 = b + det;        
 
         if (t1 > epsilon)
-            int_rec.t = t1;
+            intRec.t = t1;
         else if (t2 > epsilon)
-                int_rec.t = t2;
+                intRec.t = t2;
         else
             return false;
 
-        int_rec.position = Vec3.add(ray.origin, Vec3.mul(ray.direction, int_rec.t));
-        int_rec.normal = Vec3.normalize(Vec3.sub(int_rec.position, position));
+        intRec.position = Vec3.add(ray.origin, Vec3.mul(ray.direction, intRec.t));
+        intRec.normal = Vec3.normalize(Vec3.sub(intRec.position, center));
         
         return true;
     }
 
     final public double radius;
-    final public Vec3 position;
+    final public Vec3 center;
     final public Vec3 emission;
     final public Vec3 color;
-    final public ReflectionType refl_type;
+    final public ReflectionType reflType;
 }

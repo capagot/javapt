@@ -1,66 +1,56 @@
 package javapt;
 
-public class RenderTask implements Runnable {
-	public RenderTask(final Camera camera,  final Scene scene, final int samples, final ImageBuffer image_buffer, final int line) {
+final public class RenderTask implements Runnable {
+	public RenderTask(final Camera camera,  final Scene scene, final int samples, final ImageBuffer imageBuffer, final int line) {
 		this.camera = camera;
 		this.scene = scene;
 		this.samples = samples;
-		this.image_buffer = image_buffer;		
+		this.imageBuffer = imageBuffer;		
 		this.line = line;	
 	    this.r = new java.util.Random(this.line);
 	}
 	
 	@Override
-	public void run() {	  
-
-    	for(int x = 0; x < camera.x_res; ++x) {
+	final public void run() {	  
+    	for(int x = 0; x < camera.imageWidth; ++x) {
         	for(int s = 0; s < samples; ++s) {
-            	final Vec2 pixel_sample = new Vec2(x + r.nextDouble(), this.line + r.nextDouble());                	
-                Ray ray = camera.getRay(pixel_sample);
-                image_buffer.setPixel(x, this.line, Vec3.add(image_buffer.getPixel(x, this.line), traceRay(ray, 0)));
+            	final Vec2 pixelSample = new Vec2(x + r.nextDouble(), this.line + r.nextDouble());                	
+                Ray ray = camera.getRay(pixelSample);
+                imageBuffer.setPixel(x, this.line, Vec3.add(imageBuffer.getPixel(x, this.line), traceRay(ray, 0)));
             }
 
-            image_buffer.setPixel(x, this.line, Vec3.div(image_buffer.getPixel(x, this.line), samples));                		
+            imageBuffer.setPixel(x, this.line, Vec3.div(imageBuffer.getPixel(x, this.line), samples));                		
         }            	
 	}
 
-    final Vec3 traceRay(final Ray ray, final int depth) {
-        IntersectionRecord int_rec = new IntersectionRecord();
+    final public Vec3 traceRay(final Ray ray, final int depth) {
+        IntersectionRecord intRec = new IntersectionRecord();
     	
-        if (!scene.intersect(ray, int_rec) || (depth > 5))
+        if (!scene.intersect(ray, intRec) || (depth > 5))
             return new Vec3();
         
-        ONB onb = new ONB(Vec3.normalize(int_rec.normal));
+        ONB onb = new ONB(Vec3.normalize(intRec.normal));
 
-        if (scene.primitives[int_rec.id].refl_type == ReflectionType.DIFFUSE) {
-        	double r1 = r.nextDouble();
-        	double r2 = r.nextDouble();        	        	
-            double phi = 2.0 * Math.PI * r2;
-            double sqrt_sin_theta = Math.sqrt(1.0 - r1 * r1);
-            
-        	Vec3 local_wi = new Vec3(Math.cos(phi) * sqrt_sin_theta, r1, Math.sin(phi) * sqrt_sin_theta);
-        	Vec3 world_wi = Mat3x3.mul(onb.getLocalToWorldMatrix(), local_wi);
-        	Ray new_ray = new Ray(Vec3.add(int_rec.position, Vec3.mul(world_wi, 1e-5)), world_wi);
-        	
-        	Vec3 brdf = Vec3.div(scene.primitives[int_rec.id].color, Math.PI);
-        	double pdf = (2.0 * Math.PI);
-        	Vec3 emission = scene.primitives[int_rec.id].emission;
-        	
-        	return Vec3.add(emission, Vec3.mul(Vec3.mul(Vec3.mul(brdf, traceRay(new_ray, depth + 1)), r1), pdf));
-        } else if (scene.primitives[int_rec.id].refl_type == ReflectionType.SPECULAR) {
+        if (scene.primitives[intRec.id].reflType == ReflectionType.DIFFUSE) {
+			// Cosine importance sampling
+			double r1 = r.nextDouble();
+			double r2 = r.nextDouble();
+			double phi = 2.0 * Math.PI * r2;
+			double cosTheta = Math.sqrt(r1);
+			double sqrtSinTheta = Math.sqrt(1.0 - r1);
+			Vec3 localWi = new Vec3(Math.cos(phi) * sqrtSinTheta, cosTheta, Math.sin(phi) * sqrtSinTheta);            
+			Vec3 worldWi = Mat3x3.mul(onb.getLocalToWorldMatrix(), localWi);               
+			Ray newRay = new Ray(Vec3.add(intRec.position, Vec3.mul(worldWi, 1e-5)), worldWi);
 
-        			
-//            double r1 = r.nextDouble();
-//            double r2 = r.nextDouble();
-//            double phi = 2.0 * Math.PI * r2;
-//            double cos_theta = Math.sqrt(r1);
-//            double sqrt_sin_theta = Math.sqrt(1.0 - cos_theta * cos_theta);
-//            Vec3 local_wi = new Vec3(Math.cos(phi) * sqrt_sin_theta, cos_theta, Math.sin(phi) * sqrt_sin_theta);            
-//            double sample_probability = cos_theta / Math.PI;                        
-//            Vec3 world_wi = Mat3x3.mul(onb.getLocalToWorldMatrix(), local_wi);               
-//            Ray new_ray = new Ray(Vec3.add(int_rec.position, Vec3.mul(world_wi, 1e-3)), world_wi);
-//            
-//            return Vec3.add(scene.primitives[int_rec.id].emission, Vec3.mul(Vec3.mul(Vec3.div(scene.primitives[int_rec.id].color, Math.PI), traceRay(new_ray, depth + 1)), Math.PI));
+			Vec3 brdf = scene.primitives[intRec.id].color;
+			Vec3 emission = scene.primitives[intRec.id].emission;
+
+			return Vec3.add(emission, Vec3.mul(brdf, traceRay(newRay, depth + 1)));
+			
+        } else if (scene.primitives[intRec.id].reflType == ReflectionType.SPECULAR) {
+        	
+        } else if (scene.primitives[intRec.id].reflType == ReflectionType.DIELECTRIC) {
+
         }
         
         return new Vec3();                   
@@ -69,7 +59,7 @@ public class RenderTask implements Runnable {
 	final Camera camera;
 	final Scene scene;
 	final int samples;
-	final ImageBuffer image_buffer;
+	final ImageBuffer imageBuffer;
 	final int line;
-	java.util.Random r;
+	private java.util.Random r;
 }

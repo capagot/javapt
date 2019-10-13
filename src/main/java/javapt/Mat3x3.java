@@ -1,6 +1,6 @@
 package javapt;
 
-class Mat3x3 {
+public class Mat3x3 {
     public Mat3x3() {
         m = new Vec3[3];
         m[0] = new Vec3();

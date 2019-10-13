@@ -1,6 +1,6 @@
 package javapt;
 
-class ONB {
+public class ONB {
     public ONB(final Vec3 v) {
         this.v = v;
 
@@ -11,8 +11,8 @@ class ONB {
 
         u = Vec3.cross(this.v, this.w);
         
-        local_to_world_matrix = new Mat3x3();
-        world_to_local_matrix = new Mat3x3();
+        localToWorldMatrix = new Mat3x3();
+        worldToLocalMatrix = new Mat3x3();
 
         setBasisMatrix();        
     }
@@ -22,30 +22,30 @@ class ONB {
         this.w = w;
         this.v = Vec3.cross(w, u);
 
-        local_to_world_matrix = new Mat3x3();
-        world_to_local_matrix = new Mat3x3();
+        localToWorldMatrix = new Mat3x3();
+        worldToLocalMatrix = new Mat3x3();
 
         setBasisMatrix();
     }
 
     public Mat3x3 getLocalToWorldMatrix() {
-        return local_to_world_matrix;
+        return localToWorldMatrix;
     }
 
     public Mat3x3 getWorldToLocalMatrix() {
-        return world_to_local_matrix;
+        return worldToLocalMatrix;
     }
 
     private void setBasisMatrix() {
-    	world_to_local_matrix.m[0] = u;
-    	world_to_local_matrix.m[1] = v;
-    	world_to_local_matrix.m[2] = w;
-    	local_to_world_matrix = Mat3x3.transpose(world_to_local_matrix);        
+    	worldToLocalMatrix.m[0] = u;
+    	worldToLocalMatrix.m[1] = v;
+    	worldToLocalMatrix.m[2] = w;
+    	localToWorldMatrix = Mat3x3.transpose(worldToLocalMatrix);        
     }
 
     private Vec3 u;
     private Vec3 v;
     private Vec3 w;
-    private Mat3x3 local_to_world_matrix;
-    private Mat3x3 world_to_local_matrix;
+    private Mat3x3 localToWorldMatrix;
+    private Mat3x3 worldToLocalMatrix;
 };

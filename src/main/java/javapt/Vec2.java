@@ -1,6 +1,6 @@
 package javapt;
 
-class Vec2 {
+public class Vec2 {
     public Vec2() {}
 
     public Vec2(final double a) {

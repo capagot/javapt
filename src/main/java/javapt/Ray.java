@@ -1,6 +1,6 @@
 package javapt;
 
-class Ray {
+final public class Ray {
     public Ray(final Vec3 origin, final Vec3 direction) {
         this.origin = origin;
         this.direction = direction;
