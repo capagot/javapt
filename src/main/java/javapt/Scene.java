@@ -2,7 +2,7 @@ package javapt;
 
 final public class Scene {
     public Scene() {
-        primitives = new Sphere[6];
+        primitives = new Sphere[7];
 
         // Scene: radius, position, emission, color, material
         primitives[0] = new Sphere(10.0, new Vec3(0.0, 11.97, 0.0), new Vec3(10.0, 10.0, 10.0), new Vec3(), ReflectionType.DIFFUSE); // Light
@@ -11,6 +11,8 @@ final public class Scene {
         primitives[3] = new Sphere(10000.0, new Vec3(10002.5, 0.0, 0.0), new Vec3(), new Vec3(0.25, 0.25, 0.75), ReflectionType.DIFFUSE);  // Right
         primitives[4] = new Sphere(10000.0, new Vec3(0.0, 10002.0, 0.0), new Vec3(), new Vec3(0.75, 0.75, 0.75), ReflectionType.DIFFUSE);  // Top
         primitives[5] = new Sphere(10000.0, new Vec3(0.0, 0.0, -10002.0), new Vec3(), new Vec3(0.75, 0.75, 0.75), ReflectionType.DIFFUSE);  // Back
+
+        primitives[6] = new Sphere(1.0, new Vec3(0.0, -1.0, 0.0), new Vec3(), new Vec3(0.999, 0.999, 0.999), ReflectionType.SPECULAR);
     }
 
     final public boolean intersect(final Ray ray, IntersectionRecord intRec) {

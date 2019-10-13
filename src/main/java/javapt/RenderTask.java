@@ -48,6 +48,15 @@ final public class RenderTask implements Runnable {
             return Vec3.add(emission, Vec3.mul(brdf, traceRay(newRay, depth + 1)));
 
         } else if (scene.primitives[intRec.id].reflType == ReflectionType.SPECULAR) {
+            // Specular importance sampling
+            final Vec3 localWo = Mat3x3.mul(onb.getWorldToLocalMatrix(), Vec3.mul(ray.direction, -1.0));
+            final Vec3 localWi = new Vec3(-localWo.x, localWo.y, -localWo.z);
+            final Vec3 worldWi = Mat3x3.mul(onb.getLocalToWorldMatrix(), localWi);
+            final Ray newRay = new Ray(Vec3.add(intRec.position, Vec3.mul(worldWi, 1e-5)), worldWi);
+
+            final Vec3 emission = scene.primitives[intRec.id].emission;
+
+            return Vec3.add(emission, traceRay(newRay, depth + 1));
 
         } else if (scene.primitives[intRec.id].reflType == ReflectionType.DIELECTRIC) {
 
@@ -56,10 +65,10 @@ final public class RenderTask implements Runnable {
         return new Vec3();
     }
 
-    final Camera camera;
-    final Scene scene;
-    final int samples;
-    final ImageBuffer imageBuffer;
-    final int line;
+    final private Camera camera;
+    final private Scene scene;
+    final private int samples;
+    final private ImageBuffer imageBuffer;
+    final private int line;
     private java.util.Random r;
 }

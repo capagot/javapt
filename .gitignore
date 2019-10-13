@@ -3,3 +3,7 @@
 
 #ignore generated images
 *.ppm 
+
+#ignore intellij stuff
+/.idea/
+*.iml
