@@ -5,13 +5,13 @@ final public class Camera {
         this.position = position;
         Vec3 direction = Vec3.normalize(Vec3.sub(lookAt, this.position));
         this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;        
+        this.imageHeight = imageHeight;
         this.onb = new ONB(Vec3.normalize(Vec3.cross(up, Vec3.mul(direction, -1.0))), Vec3.mul(direction, -1.0));
 
         double a = this.imageWidth * 0.5;
         double b = this.imageHeight * 0.5;
         double viewPlaneDistance = b / Math.tan(vFov * 0.5 * Math.PI / 180.0);
-        localUpperLeftCorner = new Vec3(-a, b, -viewPlaneDistance);            
+        localUpperLeftCorner = new Vec3(-a, b, -viewPlaneDistance);
     }
 
     final public Ray getRay(final Vec2 sample) {

@@ -10,9 +10,9 @@ final public class PathTracer {
         ImageBuffer imageBuffer = new ImageBuffer(imageWidth, imageHeight, "image.ppm");
         Integrator integrator = new Integrator(camera, scene, samples, imageBuffer);
 
-        integrator.render();        
+        integrator.render();
         imageBuffer.saveBufferToFile();
-        
+
         System.out.printf("%nRendering finished!%n");
     }
 }

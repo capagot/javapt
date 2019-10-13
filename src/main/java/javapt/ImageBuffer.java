@@ -37,19 +37,19 @@ final public class ImageBuffer {
                     int b = (int) (Math.pow(clamp(imageBuffer[y][x].z), 0.45454545) * 255.0 + 0.5);
 
                     bwriter.write(r + " " + g + " " + b + " ");
-                }                
+                }
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
-        }                
+        }
     }
 
     final private double clamp(final double a) {
-    	if (a > 1.0)
-    		return 1.0;
-    	
-    	return a;
+        if (a > 1.0)
+            return 1.0;
+
+        return a;
     }
-    
+
     final private int imageWidth;
     final private int imageHeight;
     final private String fileName;

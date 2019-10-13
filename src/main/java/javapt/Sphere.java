@@ -20,7 +20,7 @@ final class Sphere {
 
         det = Math.sqrt(det);
         double t1 = b - det;
-        double t2 = b + det;        
+        double t2 = b + det;
 
         if (t1 > epsilon)
             intRec.t = t1;
@@ -31,7 +31,7 @@ final class Sphere {
 
         intRec.position = Vec3.add(ray.origin, Vec3.mul(ray.direction, intRec.t));
         intRec.normal = Vec3.normalize(Vec3.sub(intRec.position, center));
-        
+
         return true;
     }
 

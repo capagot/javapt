@@ -1,7 +1,7 @@
 package javapt;
 
 enum ReflectionType {
-    DIFFUSE, 
-    SPECULAR, 
+    DIFFUSE,
+    SPECULAR,
     DIELECTRIC
 }

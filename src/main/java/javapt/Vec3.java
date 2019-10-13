@@ -15,28 +15,28 @@ public class Vec3 {
         this.z = z;
     }
 
-    public static Vec3 add(final Vec3 a, final Vec3 b) {        
+    public static Vec3 add(final Vec3 a, final Vec3 b) {
         return new Vec3(a.x + b.x, a.y + b.y, a.z + b.z);
     }
 
-    public static Vec3 sub(final Vec3 a, final Vec3 b) {        
+    public static Vec3 sub(final Vec3 a, final Vec3 b) {
         return new Vec3(a.x - b.x, a.y - b.y, a.z - b.z);
     }
 
-    public static Vec3 mul(final Vec3 a, final Vec3 b) {        
+    public static Vec3 mul(final Vec3 a, final Vec3 b) {
         return new Vec3(a.x * b.x, a.y * b.y, a.z * b.z);
     }
 
-    public static Vec3 mul(final Vec3 a, final double b) {        
+    public static Vec3 mul(final Vec3 a, final double b) {
         return new Vec3(a.x * b, a.y * b, a.z * b);
     }
 
-    public static Vec3 div(final Vec3 a, final double b) {        
+    public static Vec3 div(final Vec3 a, final double b) {
         return new Vec3(a.x / b, a.y / b, a.z / b);
     }
 
     public static double dot(final Vec3 a, final Vec3 b) {
-        return a.x * b.x + a.y * b.y + a.z * b.z; 
+        return a.x * b.x + a.y * b.y + a.z * b.z;
     }
 
     public static double norm(final Vec3 a) {

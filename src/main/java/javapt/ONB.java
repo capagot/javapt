@@ -10,11 +10,11 @@ public class ONB {
             this.w = Vec3.normalize(new Vec3(0.0, -this.v.z, this.v.y));
 
         u = Vec3.cross(this.v, this.w);
-        
+
         localToWorldMatrix = new Mat3x3();
         worldToLocalMatrix = new Mat3x3();
 
-        setBasisMatrix();        
+        setBasisMatrix();
     }
 
     public ONB(final Vec3 u, final Vec3 w) {
@@ -37,10 +37,10 @@ public class ONB {
     }
 
     private void setBasisMatrix() {
-    	worldToLocalMatrix.m[0] = u;
-    	worldToLocalMatrix.m[1] = v;
-    	worldToLocalMatrix.m[2] = w;
-    	localToWorldMatrix = Mat3x3.transpose(worldToLocalMatrix);        
+        worldToLocalMatrix.m[0] = u;
+        worldToLocalMatrix.m[1] = v;
+        worldToLocalMatrix.m[2] = w;
+        localToWorldMatrix = Mat3x3.transpose(worldToLocalMatrix);
     }
 
     private Vec3 u;
