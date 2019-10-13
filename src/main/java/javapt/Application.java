@@ -1,14 +1,14 @@
 package javapt;
 
-public class Application {
+final public class Application {
     public Application(final String[] str) {
         CmdLineParser cmd = new CmdLineParser(str);
 
-        int imageWidth = cmd.getValue("-w", 400, Integer.class);
-        int imageHeight = cmd.getValue("-h", 300, Integer.class);
-        int spp = cmd.getValue("-s", 4, Integer.class);
-        String inFileName = cmd.getValue("-f", "file_no_informed.txt", String.class);
-        int numThreads = cmd.getValue("-t", 1, Integer.class);
+        final int imageWidth = cmd.getValue("-w", 400, Integer.class);
+        final int imageHeight = cmd.getValue("-h", 300, Integer.class);
+        final int spp = cmd.getValue("-s", 4, Integer.class);
+        final String inFileName = cmd.getValue("-f", "file_no_informed.txt", String.class);
+        final int numThreads = cmd.getValue("-t", 1, Integer.class);
 
         System.out.println("Image size .........: " + imageWidth + " x " + imageHeight + " pixels");
         System.out.println("Samples per pixel ..: " + spp);
@@ -28,8 +28,8 @@ public class Application {
         System.out.printf("%nRendering finished!%n");        
     }
 
-    private Camera camera;
-    private Scene scene;
-    private ImageBuffer imageBuffer;
-    private Integrator integrator;
+    final private Camera camera;
+    final private Scene scene;
+    final private ImageBuffer imageBuffer;
+    final private Integrator integrator;
 }
