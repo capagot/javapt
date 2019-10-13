@@ -29,21 +29,21 @@ final public class RenderTask implements Runnable {
         if (!scene.intersect(ray, intRec) || (depth > 5))
             return new Vec3();
 
-        ONB onb = new ONB(Vec3.normalize(intRec.normal));
+        final ONB onb = new ONB(Vec3.normalize(intRec.normal));
 
         if (scene.primitives[intRec.id].reflType == ReflectionType.DIFFUSE) {
             // Cosine importance sampling
-            double r1 = r.nextDouble();
-            double r2 = r.nextDouble();
-            double phi = 2.0 * Math.PI * r2;
-            double cosTheta = Math.sqrt(r1);
-            double sqrtSinTheta = Math.sqrt(1.0 - r1);
-            Vec3 localWi = new Vec3(Math.cos(phi) * sqrtSinTheta, cosTheta, Math.sin(phi) * sqrtSinTheta);
-            Vec3 worldWi = Mat3x3.mul(onb.getLocalToWorldMatrix(), localWi);
-            Ray newRay = new Ray(Vec3.add(intRec.position, Vec3.mul(worldWi, 1e-5)), worldWi);
+            final double r1 = r.nextDouble();
+            final double r2 = r.nextDouble();
+            final double phi = 2.0 * Math.PI * r2;
+            final double cosTheta = Math.sqrt(r1);
+            final double sqrtSinTheta = Math.sqrt(1.0 - r1);
+            final Vec3 localWi = new Vec3(Math.cos(phi) * sqrtSinTheta, cosTheta, Math.sin(phi) * sqrtSinTheta);
+            final Vec3 worldWi = Mat3x3.mul(onb.getLocalToWorldMatrix(), localWi);
+            final Ray newRay = new Ray(Vec3.add(intRec.position, Vec3.mul(worldWi, 1e-5)), worldWi);
 
-            Vec3 brdf = scene.primitives[intRec.id].color;
-            Vec3 emission = scene.primitives[intRec.id].emission;
+            final Vec3 brdf = scene.primitives[intRec.id].color;
+            final Vec3 emission = scene.primitives[intRec.id].emission;
 
             return Vec3.add(emission, Vec3.mul(brdf, traceRay(newRay, depth + 1)));
 
