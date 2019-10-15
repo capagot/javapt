@@ -7,3 +7,6 @@
 #ignore intellij stuff
 /.idea/
 *.iml
+
+#ignore Maven stuff
+dependency-reduced-pom.xml

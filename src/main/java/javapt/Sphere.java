@@ -1,12 +1,12 @@
 package javapt;
 
 final class Sphere {
-    public Sphere(final double radius, final Vec3 center, final Vec3 emission, final Vec3 color, final ReflectionType reflType) {
+    public Sphere(final double radius, final Vec3 center, final Vec3 emission, final Vec3 color, final BSDF bsdf) {
         this.radius = radius;
         this.center = center;
         this.emission = emission;
         this.color = color;
-        this.reflType = reflType;
+        this.bsdf = bsdf;
     }
 
     final public boolean intersect(final Ray ray, IntersectionRecord intRec) {
@@ -39,5 +39,5 @@ final class Sphere {
     final public Vec3 center;
     final public Vec3 emission;
     final public Vec3 color;
-    final public ReflectionType reflType;
+    final public BSDF bsdf;
 }
