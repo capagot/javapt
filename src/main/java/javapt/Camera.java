@@ -1,6 +1,18 @@
 package javapt;
 
+/**
+ * Represents the camera. 
+ */
 final public class Camera {
+    /**
+    * Creates a camera with the specified position, look at, up vector, vertical field of view.
+    * @param position Position of the camera. 
+    * @param lookAt Point where the camera is aiming at.
+    * @param up Vector the points to the camera's up direction. 
+    * @param vFov Vertical fielf of view, in degrees. 
+    * @param imageWidth Image width in pixels. 
+    * @param imageHeight Image height in pixels. 
+    */    
     public Camera(final Vec3 position, final Vec3 lookAt, final Vec3 up, final double vFov, final int imageWidth, final int imageHeight) {
         this.position = position;
         Vec3 direction = Vec3.normalize(Vec3.sub(lookAt, this.position));
@@ -14,6 +26,10 @@ final public class Camera {
         localUpperLeftCorner = new Vec3(-a, b, -viewPlaneDistance);
     }
 
+    /**
+    * Generates a ray, in world space, given the correspoding image pixel coordinates. 
+    * @param sample 2D coordinates of the sample.
+    */    
     final public Ray getRay(final Vec2 sample) {
         Vec3 localRayDirection = Vec3.normalize(Vec3.add(localUpperLeftCorner, new Vec3(sample.x, -sample.y, 0.0)));
         Vec3 worldRayDirection = Mat3x3.mul(onb.getLocalToWorldMatrix(), localRayDirection);

@@ -1,14 +1,14 @@
 package javapt;
 
 /**
- * The Application class is the main class of the renderer. It loads data, initializes the main objects, starts the
- * rendering and stores the resulting image to the disk.
- * @author Christian Azambuja Pagot
+ * The main application class. It is responsible for creating
+ * all other objects needed by the renderer and for starting the rendering
+ * itself.
  */
 final public class Application {
     /**
-     * The Application construtor is responsible for initializing the main objects of the renderer.
-     * @param str the command line options string array.
+     * Creates the application.
+     * @param str the string containing the command line options.
      */
     public Application(final String[] str) {
         CmdLineParser cmd = new CmdLineParser(str);
@@ -44,15 +44,15 @@ final public class Application {
         System.out.println("num spheres: " + numSpheres);
 
         for (int i = 0; i < numSpheres; ++i) {
-            System.out.println("-- sphere " + i + " --------");
+            //System.out.println("-- sphere " + i + " --------");
             Vec3 center = sceneParser.getSphereCenter(i);
-            System.out.println("  center: " + center.x + ", " + center.y + ", " + center.z);
+            //System.out.println("  center: " + center.x + ", " + center.y + ", " + center.z);
             double radius = sceneParser.getSphereRadius(i);
-            System.out.println("  radius: " + radius);
+            //System.out.println("  radius: " + radius);
             Vec3 reflectance = sceneParser.getSphereReflectance(i);
-            System.out.println("  reflectance: " + reflectance.x + ", " + reflectance.y + ", " + reflectance.z);
+            //System.out.println("  reflectance: " + reflectance.x + ", " + reflectance.y + ", " + reflectance.z);
             Vec3 emission = sceneParser.getSphereEmission(i);
-            System.out.println("  emission: " + emission.x + ", " + emission.y + ", " + emission.z);
+            //System.out.println("  emission: " + emission.x + ", " + emission.y + ", " + emission.z);
 
             BSDF bsdf = sceneParser.getSphereBSDF(i);
             if (bsdf == BSDF.LAMBERTIAN)
@@ -62,21 +62,14 @@ final public class Application {
             else if (bsdf == BSDF.SMOOTH_DIELECTRIC)
                 System.out.println("  bsdf: smooth dielectric");
 
-            // Sphere: radius, position, emission, color, material
             scene.addSphere(new Sphere(radius, center, emission, reflectance, bsdf));
         }
 
         integrator = new Integrator(camera, scene, spp, imageBuffer, numThreads);
-
-//        camera = new Camera(new Vec3(0.0, 0.0, 8.0), new Vec3(0.0, 0.0, 0.0), new Vec3(0.0, 1.0, 0.0), 35.0, imageWidth, imageHeight);
-//        scene = new Scene();
-//        imageBuffer = new ImageBuffer(imageWidth, imageHeight, "image.ppm");
-//        integrator = new Integrator(camera, scene, spp, imageBuffer, numThreads);
-
     }
 
     /**
-     * The run method starts the rendering and saves the resulting image to the disk once it is finished.
+     * Starts the rendering. At the end the resulting image is stored in a file.
      */
     final public void run() {
         integrator.render();
