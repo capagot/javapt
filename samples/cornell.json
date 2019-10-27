@@ -9,58 +9,83 @@
         {
             "center": [0.0, 11.97, 0.0],
             "radius" : 10.0,
-            "reflectance": [],
-            "emission": [10.0, 10.0, 10.0],
-            "bsdf": "lambertian"
+            "material": {
+                "bsdf": { "type": "lambertian",
+                          "reflectance": []
+                },
+                "emission": [10.0, 10.0, 10.0]
+            }
         },
         {
             "center": [0.0, -10002.0, 0.0],
             "radius" : 10000.0,
-            "reflectance": [0.75, 0.75, 0.75],
-            "emission": [],
-            "bsdf": "lambertian"
+            "material": {
+                "bsdf": { "type": "lambertian",
+                          "reflectance": [0.75, 0.75, 0.75]
+                },
+                "emission": []
+            }
         },
         {
             "center": [-10002.5, 0.0, 0.0],
             "radius" : 10000.0,
-            "reflectance": [0.75, 0.25, 0.25],
-            "emission": [],
-            "bsdf": "lambertian"
+            "material": {
+                "bsdf": { "type": "lambertian",
+                          "reflectance": [0.75, 0.25, 0.25]
+                },
+                "emission": []
+            }
         },
         {
             "center": [10002.5, 0.0, 0.0],
             "radius" : 10000.0,
-            "reflectance": [0.25, 0.25, 0.75],
-            "emission": [],
-            "bsdf": "lambertian"
+            "material": {
+                "bsdf": { "type": "lambertian",
+                          "reflectance": [0.25, 0.25, 0.75]
+                },
+                "emission": []
+            }
         },
         {
             "center": [0.0, 10002.0, 0.0],
             "radius" : 10000.0,
-            "reflectance": [0.75, 0.75, 0.75],
-            "emission": [],
-            "bsdf": "lambertian"
+            "material": {
+                "bsdf": { "type": "lambertian",
+                          "reflectance": [0.75, 0.75, 0.75]
+                },
+                "emission": []
+            }
         },
         {
             "center": [0.0, 0.0, -10002.5],
             "radius" : 10000.0,
-            "reflectance": [0.75, 0.75, 0.75],
-            "emission": [],
-            "bsdf": "lambertian"
+            "material": {
+                "bsdf": { "type": "lambertian",
+                          "reflectance": [0.75, 0.75, 0.75]
+                },
+                "emission": []
+            }
         },
+        ,
         {
             "center": [-1.2, -1.2, -0.6],
             "radius" : 0.8,
-            "reflectance": [0.999, 0.999, 0.999],
-            "emission": [],
-            "bsdf": "smooth conductor"
+            "material": {
+                "bsdf": { "type": "smooth conductor",
+                          "reflectance_at_normal": [0.999, 0.999, 0.999]
+                },
+                "emission": []
+            }
         },
         {
             "center": [1.2, -1.2, 0.0],
             "radius" : 0.8,
-            "reflectance": [0.999, 0.999, 0.999],
-            "emission": [],
-            "bsdf": "smooth dielectric"
-        }
+            "material": {
+                "bsdf": { "type": "smooth dielectric",
+                          "ior": 1.49,
+                },
+                "emission": []
+            }
+        }        
     ]
 }

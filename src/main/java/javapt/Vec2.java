@@ -1,11 +1,11 @@
 package javapt;
 
-public class Vec2 {
+public final class Vec2 {
     public Vec2() {}
 
     public Vec2(final double a) {
-        this.x = a;
-        this.y = a;
+        x = a;
+        y = a;
     }
 
     public Vec2(final double x, final double y) {

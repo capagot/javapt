@@ -4,7 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-final public class Integrator {
+public final class Integrator {
     public Integrator(final Camera camera, final Scene scene, final int samples, final ImageBuffer imageBuffer, final int numThreads) {
         this.camera = camera;
         this.scene = scene;
@@ -13,10 +13,10 @@ final public class Integrator {
         this.numThreads = numThreads;
     }
 
-    final public void render() {
+    public final void render() {
         final ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
 
-        for(int y = 0; y < camera.imageHeight; ++y)
+        for(int y = 0; y < camera.getImageHeight(); ++y)
             executorService.submit(new RenderTask(camera, scene, samples, imageBuffer, y));
 
         executorService.shutdown();
@@ -29,9 +29,9 @@ final public class Integrator {
         }
     }
 
-    final private Camera camera;
-    final private Scene scene;
-    final private int samples;
-    final private ImageBuffer imageBuffer;
-    final int numThreads;
+    private final Camera camera;
+    private final Scene scene;
+    private final int samples;
+    private final ImageBuffer imageBuffer;
+    private final int numThreads;
 }

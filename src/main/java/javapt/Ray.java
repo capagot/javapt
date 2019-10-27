@@ -1,11 +1,19 @@
 package javapt;
 
-final public class Ray {
+public final class Ray {
     public Ray(final Vec3 origin, final Vec3 direction) {
         this.origin = origin;
         this.direction = direction;
     }
 
-    public Vec3 origin;
-    public Vec3 direction;
+    public final Vec3 getOrigin() {
+        return origin;
+    }
+
+    public final Vec3 getDirection() {
+        return direction;
+    }
+
+    private final Vec3 origin;
+    private final Vec3 direction;
 }

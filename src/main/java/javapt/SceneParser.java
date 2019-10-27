@@ -5,27 +5,28 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
-public class SceneParser {
+public final class SceneParser {
     SceneParser(final String inFileName) {
         try (FileReader reader = new FileReader(inFileName)) {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
-            this.camera = (JSONObject) jsonObject.get("camera");
-            this.scene = (JSONArray) jsonObject.get("scene");
+            camera = (JSONObject) jsonObject.get("camera");
+            scene = (JSONArray) jsonObject.get("scene");
         } catch (Exception e) {
             System.out.println("ERROR: Problem reading JSON file.");
+            e.printStackTrace();
         }
     }
 
-    final public Vec3 getCameraPosition() {
+    public final Vec3 getCameraPosition() {
         return getVec3(camera, "position");
     }
 
-    final public Vec3 getCameraLookAt() {
+    public final Vec3 getCameraLookAt() {
         return getVec3(camera, "look_at");
     }
 
-    final public Vec3 getCameraUp() {
+    public final Vec3 getCameraUp() {
         return getVec3(camera, "up");
     }
 
@@ -33,58 +34,47 @@ public class SceneParser {
         return (Double) camera.get("vfov");
     }
 
-    final public int getNumSpheres() {
+    public final int getNumSpheres() {
         return scene.size();
     }
 
-    final public Vec3 getSphereCenter(final int i) {
+    public final Vec3 getSphereCenter(final int i) {
         final JSONObject jsonObject = (JSONObject) scene.get(i);
         return getVec3(jsonObject, "center");
     }
 
-    final public double getSphereRadius(final int i) {
+    public final double getSphereRadius(final int i) {
         final JSONObject jsonObject = (JSONObject) scene.get(i);
         return (Double) jsonObject.get("radius");
     }
 
-    final public Vec3 getSphereReflectance(final int i) {
-        final JSONObject jsonObject = (JSONObject) scene.get(i);
-        final JSONArray jsonArray = (JSONArray) jsonObject.get("reflectance");
-        if (jsonArray.size() != 3)
-            return new Vec3();
-        else
-            return getVec3(jsonObject, "reflectance");
+    public final Material getSphereMaterial(final int i) {
+        final JSONObject JSONObject = (JSONObject) scene.get(i);
+        final JSONObject JSONMaterial = (JSONObject) JSONObject.get("material");
+        final JSONObject JSONBsdf = (JSONObject) JSONMaterial.get("bsdf");
+        final String bsdfType = (String) JSONBsdf.get("type");
+        final JSONArray JSONEmission = (JSONArray) JSONMaterial.get("emission");
+        final Vec3 emission = getVec3(JSONMaterial, "emission");
+
+        if (bsdfType.compareTo("lambertian") == 0) {
+            final Vec3 reflectance = getVec3(JSONBsdf, "reflectance");
+            return new Material(emission, new Lambertian(reflectance));            
+        } else if (bsdfType.compareTo("smooth conductor") == 0) {
+            final Vec3 reflectanceAtNormal = getVec3(JSONBsdf, "reflectance_at_normal");
+            return new Material(emission, new SmoothConductor(reflectanceAtNormal));            
+        }
+
+        final Double ior = (Double) JSONBsdf.get("ior");
+        return new Material(emission, new SmoothDielectric(ior));                    
     }
 
-    final public Vec3 getSphereEmission(final int i) {
-        final JSONObject jsonObject = (JSONObject) scene.get(i);
-        final JSONArray jsonArray = (JSONArray) jsonObject.get("emission");
-        if (jsonArray.size() != 3)
-            return new Vec3();
-        else
-            return getVec3(jsonObject, "emission");
-    }
-
-    final public BSDF getSphereBSDF(final int i) {
-        final JSONObject jsonObject = (JSONObject) scene.get(i);
-        String bsdf = (String) jsonObject.get("bsdf");
-
-        if (bsdf.compareTo("lambertian") == 0)
-            return BSDF.LAMBERTIAN;
-
-        if (bsdf.compareTo("smooth conductor") == 0)
-            return BSDF.SMOOTH_CONDUCTOR;
-
-        return BSDF.SMOOTH_DIELECTRIC;
-    }
-
-    final private Vec3 getVec3(final JSONObject jsonObject, final String fieldName) {
+    private final Vec3 getVec3(final JSONObject jsonObject, final String fieldName) {
         final JSONArray jsonArray = (JSONArray) jsonObject.get(fieldName);
-        final double x = (Double) jsonArray.get(0);
-        final double y = (Double) jsonArray.get(1);
-        final double z = (Double) jsonArray.get(2);
 
-        return new Vec3(x, y, z);
+        if (jsonArray.size() != 3)
+            return new Vec3();
+
+        return new Vec3((Double) jsonArray.get(0), (Double) jsonArray.get(1), (Double) jsonArray.get(2));
     }
 
     private JSONObject camera;

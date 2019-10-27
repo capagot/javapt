@@ -1,14 +1,14 @@
 package javapt;
 
 /**
- * The main application class. It is responsible for creating
+ * Main application class. It is responsible for creating
  * all other objects needed by the renderer and for starting the rendering
- * itself.
+ * process itself.
  */
-final public class Application {
+public final class Application {
     /**
      * Creates the application.
-     * @param str the string containing the command line options.
+     * @param str String containing the command line options.
      */
     public Application(final String[] str) {
         CmdLineParser cmd = new CmdLineParser(str);
@@ -16,7 +16,7 @@ final public class Application {
         final int imageWidth = cmd.getValue("-w", 400, Integer.class);
         final int imageHeight = cmd.getValue("-h", 300, Integer.class);
         final int spp = cmd.getValue("-s", 4, Integer.class);
-        final String inFileName = cmd.getValue("-f", "file_no_informed.txt", String.class);
+        final String inFileName = cmd.getValue("-f", "input.json", String.class);
         final int numThreads = cmd.getValue("-t", 1, Integer.class);
 
         System.out.println("Image size .........: " + imageWidth + " x " + imageHeight + " pixels");
@@ -24,62 +24,49 @@ final public class Application {
         System.out.println("Number of threads ..: " + numThreads);
         System.out.println("Input file name ....: " + inFileName);
 
-
         final SceneParser sceneParser = new SceneParser(inFileName);
+        final Vec3 position = sceneParser.getCameraPosition();
+        final Vec3 lookAt = sceneParser.getCameraLookAt();
+        final Vec3 up = sceneParser.getCameraUp();
+        final double vFov = sceneParser.getCameraVFov();
 
-        Vec3 camPosition = sceneParser.getCameraPosition();
-        System.out.println("cam pos: " + camPosition.x + ", " + camPosition.y + ", " + camPosition.z);
-        Vec3 camLookAt = sceneParser.getCameraLookAt();
-        System.out.println("cam lookAt: " + camLookAt.x + ", " + camLookAt.y + ", " + camLookAt.z);
-        Vec3 camUp = sceneParser.getCameraUp();
-        System.out.println("cam up: " + camUp.x + ", " + camUp.y + ", " + camUp.z);
-        double camVFov = sceneParser.getCameraVFov();
-        System.out.println("cam vfov: " + camVFov);
+        System.out.println("Camera:");
+        System.out.println("  Position .........: " + position.x + ", " + position.y + ", " + position.z);
+        System.out.println("  Look at ..........: " + lookAt.x + ", " + lookAt.y + ", " + lookAt.z);
+        System.out.println("  Up ...............: " + up.x + ", " + up.y + ", " + up.z);
+        System.out.println("  Vertical FOV .....: " + vFov);
 
-        camera = new Camera(camPosition, camLookAt, camUp, camVFov, imageWidth, imageHeight);
+        camera = new Camera(position, lookAt, up, vFov, imageWidth, imageHeight);
         imageBuffer = new ImageBuffer(imageWidth, imageHeight, "image.ppm");
         scene = new Scene();
 
-        int numSpheres = sceneParser.getNumSpheres();
-        System.out.println("num spheres: " + numSpheres);
+        final int numSpheres = sceneParser.getNumSpheres();
+
+        System.out.println("Number of spheres ..: " + numSpheres);
 
         for (int i = 0; i < numSpheres; ++i) {
-            //System.out.println("-- sphere " + i + " --------");
-            Vec3 center = sceneParser.getSphereCenter(i);
-            //System.out.println("  center: " + center.x + ", " + center.y + ", " + center.z);
-            double radius = sceneParser.getSphereRadius(i);
-            //System.out.println("  radius: " + radius);
-            Vec3 reflectance = sceneParser.getSphereReflectance(i);
-            //System.out.println("  reflectance: " + reflectance.x + ", " + reflectance.y + ", " + reflectance.z);
-            Vec3 emission = sceneParser.getSphereEmission(i);
-            //System.out.println("  emission: " + emission.x + ", " + emission.y + ", " + emission.z);
+            final Vec3 center = sceneParser.getSphereCenter(i);
+            final double radius = sceneParser.getSphereRadius(i);
+            final Material material = sceneParser.getSphereMaterial(i);
 
-            BSDF bsdf = sceneParser.getSphereBSDF(i);
-            if (bsdf == BSDF.LAMBERTIAN)
-                System.out.println("  bsdf: lambertian");
-            else if (bsdf == BSDF.SMOOTH_CONDUCTOR)
-                System.out.println("  bsdf: smooth conductor");
-            else if (bsdf == BSDF.SMOOTH_DIELECTRIC)
-                System.out.println("  bsdf: smooth dielectric");
-
-            scene.addSphere(new Sphere(radius, center, emission, reflectance, bsdf));
+            scene.addSphere(new Sphere(radius, center, material));
         }
 
         integrator = new Integrator(camera, scene, spp, imageBuffer, numThreads);
     }
 
     /**
-     * Starts the rendering. At the end the resulting image is stored in a file.
+     * Starts the rendering. At the end of the rendering process the resulting
+     * image is stored in a file.
      */
-    final public void run() {
+    public final void run() {
         integrator.render();
         imageBuffer.saveBufferToFile();
-
-        System.out.printf("%nRendering finished!%n");        
+        System.out.printf("%nRendering is finished!%n");        
     }
 
-    private Camera camera;
-    private Scene scene;
-    private ImageBuffer imageBuffer;
-    private Integrator integrator;
+    private final Camera camera;
+    private final ImageBuffer imageBuffer;
+    private final Scene scene;
+    private final Integrator integrator;
 }

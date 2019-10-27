@@ -2,16 +2,20 @@ package javapt;
 
 import java.util.ArrayList;
 
-final public class Scene {
+public final class Scene {
     public Scene() {
         primitives = new ArrayList<Sphere>();
     }
 
-    final public void addSphere(final Sphere sphere) {
+    public final void addSphere(final Sphere sphere) {
         primitives.add(sphere);
     }
 
-    final public boolean intersect(final Ray ray, IntersectionRecord intRec) {
+    public final ArrayList<Sphere> getPrimitives() {
+        return primitives;
+    }
+
+    public final boolean intersect(final Ray ray, final IntersectionRecord intRec) {
         intRec.t = Double.POSITIVE_INFINITY;
         final IntersectionRecord tmpIntRec = new IntersectionRecord();
         boolean intResult = false;
@@ -31,5 +35,5 @@ final public class Scene {
         return intResult;
     }
 
-    public ArrayList<Sphere> primitives;
+    private final ArrayList<Sphere> primitives;
 }

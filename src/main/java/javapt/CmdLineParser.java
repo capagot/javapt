@@ -3,7 +3,7 @@ package javapt;
 /**
  * Comand line options parser.
  */
- final public class CmdLineParser {
+ public final class CmdLineParser {
     /** 
      * Creates the parser given the command line options string. 
      * @param str Command line options string. 
@@ -14,14 +14,16 @@ package javapt;
 
     /** 
      * Returns the value of the specified command line option.
-     * @param key Option.
+     * @param option Option.
      * @param default_value The default value o the option in the case the value is not provided in the command line option. 
      * @param type The basic type of the option. Accepted values are: Integer.class and String.class.
+     * @return The value of the corresponding input option. If the input option is not set in the command line, 
+     * its default value is returned.
      */
-    public <T> T getValue(final String key, T default_value, Class<T> type) {
+    public final <T> T getValue(final String option, final T default_value, final Class<T> type) {
         int i = 0;
 
-        while ((i < (str.length - 1)) && (str[i].compareTo(key) != 0))
+        while ((i < (str.length - 1)) && (str[i].compareTo(option) != 0))
             ++i;
 
         if (i < (str.length - 1)) {
@@ -40,5 +42,5 @@ package javapt;
         return default_value;
     }
 
-    final private String[] str;
+    private final String[] str;
 }

@@ -1,6 +1,6 @@
 package javapt;
 
-final public class PathTracer {
+public final class PathTracer {
     public static void main(final String[] str) {
         try {
             Application app = new Application(str);

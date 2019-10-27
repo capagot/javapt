@@ -1,26 +1,24 @@
 package javapt;
 
 final class Sphere {
-    public Sphere(final double radius, final Vec3 center, final Vec3 emission, final Vec3 color, final BSDF bsdf) {
+    public Sphere(final double radius, final Vec3 center, final Material material) {
         this.radius = radius;
         this.center = center;
-        this.emission = emission;
-        this.color = color;
-        this.bsdf = bsdf;
+        this.material = material;
     }
 
-    final public boolean intersect(final Ray ray, IntersectionRecord intRec) {
-        double epsilon = 1e-4;
-        Vec3 op = Vec3.sub(center, ray.origin);
-        double b = Vec3.dot(op, ray.direction);
-        double det = (radius * radius) - (Vec3.dot(op, op) - (b * b));
+    public final boolean intersect(final Ray ray, final IntersectionRecord intRec) {
+        final double epsilon = 1e-4;
+        final Vec3 op = Vec3.sub(center, ray.getOrigin());
+        final double b = Vec3.dot(op, ray.getDirection());
+        final double det1 = (radius * radius) - (Vec3.dot(op, op) - (b * b));
 
-        if (det < 0.0)
+        if (det1 < 0.0)
             return false;
 
-        det = Math.sqrt(det);
-        double t1 = b - det;
-        double t2 = b + det;
+        final double det2 = Math.sqrt(det1);
+        final double t1 = b - det2;
+        final double t2 = b + det2;
 
         if (t1 > epsilon)
             intRec.t = t1;
@@ -29,15 +27,17 @@ final class Sphere {
         else
             return false;
 
-        intRec.position = Vec3.add(ray.origin, Vec3.mul(ray.direction, intRec.t));
+        intRec.position = Vec3.add(ray.getOrigin(), Vec3.mul(ray.getDirection(), intRec.t));
         intRec.normal = Vec3.normalize(Vec3.sub(intRec.position, center));
 
         return true;
     }
 
-    final public double radius;
-    final public Vec3 center;
-    final public Vec3 emission;
-    final public Vec3 color;
-    final public BSDF bsdf;
+    public final Material getMaterial() {
+        return material;
+    }
+
+    private final double radius;
+    private final Vec3 center;
+    private final Material material;
 }
