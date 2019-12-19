@@ -7,8 +7,11 @@ package javapt;
  */
 public final class Application {
     /**
-     * Creates the application.
-     * @param str String containing the command line options.
+     * Initializes the application.
+     * @param str String containing command line options. The accepted options are:
+     * '-w' the image width in pixels; '-h' the image height in pixels; '-s' the
+     * number of samples per pixel; '-f' the input Json filename containing the scene
+     * description; '-t' the number of rendering threads to be used.
      */
     public Application(final String[] str) {
         CmdLineParser cmd = new CmdLineParser(str);
@@ -56,13 +59,13 @@ public final class Application {
     }
 
     /**
-     * Starts the rendering. At the end of the rendering process the resulting
-     * image is stored in a file.
+     * Starts the rendering process. At the end of the rendering the resulting
+     * image is stored in a PPM file.
      */
     public final void run() {
         integrator.render();
         imageBuffer.saveBufferToFile();
-        System.out.printf("%nRendering is finished!%n");        
+        System.out.printf("%nRendering is finished!%n");
     }
 
     private final Camera camera;

@@ -8,5 +8,8 @@
 /.idea/
 *.iml
 
+#ignore javadoc documentation
+/doc/
+
 #ignore Maven stuff
 dependency-reduced-pom.xml
