@@ -28,7 +28,7 @@ The following command line options are supported:
 
 The generated image is stored in the PPM format.
 
-## Building the Renderer and Rendering the Sample##
+## Building the Renderer and Rendering the Sample ##
 
 In order to build the renderer, clone the repo, and in the project root directore issue:
 
