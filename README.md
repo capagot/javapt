@@ -37,4 +37,4 @@ In order to build the renderer, clone the repo, and in the project root director
 
 To render the sample, one can issue the following command at the project root directory:
 
-```java -jar target/javapt-0.1.0.jar -help -w 400 -h 300 -s 64  -f samples/cornell.json  -t 4```
+```java -jar target/javapt-0.1.0.jar -help -w 400 -h 300 -s 64  -f sample/cornell.json  -t 4```
