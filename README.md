@@ -4,7 +4,7 @@ A simple multithreaded Java path tracer partially based on [smallpt](https://www
 
 ## Sampe Rendered Image ##
 
-The following image has a resolution of 800x600, and was generated with 4096 samples per pixel (it took a couple of hours to finish):
+The following image has a resolution of 800x600 pixels, and was generated with 4096 samples per pixel (it took a couple of hours to finish):
 
 ![Sample image](https://github.com/capagot/javapt/blob/development/sample/image.png)
 
