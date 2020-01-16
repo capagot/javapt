@@ -2,7 +2,7 @@
 
 A simple multithreaded Java path tracer partially based on [smallpt](https://www.kevinbeason.com/smallpt) and [SWPathTracer](https://github.com/capagot/swpathtracer).
 
-## Sampe Rendered Image ##
+## Sample Image ##
 
 The following image has a resolution of 800x600 pixels, and was generated with 4096 samples per pixel (it took a couple of hours to finish):
 
